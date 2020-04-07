@@ -1,5 +1,7 @@
 import numpy as np
 import torch
+import torch.nn.functional as f
+
 
 
 class Masker():
@@ -46,18 +48,26 @@ class Masker():
                 net_input = torch.cat((X, torch.zeros(X[:, 0:1].shape).to(X.device)), dim=1)
             else:
                 net_input = X
-            net_output = model(net_input)
+            net_output = model(net_input)[0]
+
             return net_output
 
         else:
             net_input, mask = self.mask(X, 0)
-            net_output = model(net_input)
+            
+
+            net_output = model(net_input)[0]
+
 
             acc_tensor = torch.zeros(net_output.shape).cpu()
 
             for i in range(self.n_masks):
                 net_input, mask = self.mask(X, i)
-                net_output = model(net_input)
+                
+
+                net_output = model(net_input)[0]
+
+
                 acc_tensor = acc_tensor + (net_output * mask).cpu()
 
             return acc_tensor
