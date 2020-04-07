@@ -41,10 +41,10 @@ class RIM(nn.Module):
 
 
         # out = nn.BatchNorm1d(out.shape[1])(out)
-        #if self.bounded > 0:
-        #    out = torch.clamp(self.conv4.forward(out), -self.bounded, self.bounded)
-        #else:
-        #    out = self.conv4.forward(out)
+        if self.bounded > 0:
+            out = torch.clamp(self.conv4.forward(out), -self.bounded, self.bounded)
+        else:
+            out = self.conv4.forward(out)
 
         return out, st_out
 
