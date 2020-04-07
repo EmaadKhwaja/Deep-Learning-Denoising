@@ -41,14 +41,14 @@ class Masker():
     def __len__(self):
         return self.n_masks
 
-    def infer_full_image(self, X, model):
+    def infer_full_image(self, X, model, st):
 
         if self.infer_single_pass:
             if self.include_mask_as_input:
                 net_input = torch.cat((X, torch.zeros(X[:, 0:1].shape).to(X.device)), dim=1)
             else:
                 net_input = X
-            net_output = model(net_input)
+            net_output = model(net_input, st)[0]
 
             return net_output
 
@@ -56,7 +56,7 @@ class Masker():
             net_input, mask = self.mask(X, 0)
             
 
-            net_output = model(net_input)
+            net_output = model(net_input,st)[0]
 
 
             acc_tensor = torch.zeros(net_output.shape).cpu()
@@ -65,7 +65,7 @@ class Masker():
                 net_input, mask = self.mask(X, i)
                 
 
-                net_output = model(net_input)
+                net_output = model(net_input,st)[0]
 
 
                 acc_tensor = acc_tensor + (net_output * mask).cpu()

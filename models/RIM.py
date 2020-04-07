@@ -29,12 +29,11 @@ class RIM(nn.Module):
 
         self.bounded = bounded
 
-    def forward(self, xt):
+    def forward(self, xt, st):
         out = f.relu(self.conv1.forward(xt))
         # out = nn.BatchNorm1d(out.shape[1])(out)
         out = f.relu(self.conv2.forward(out))
         # out = nn.BatchNorm1d(out.shape[1])(out)
-        st=torch.zeros(out.size())
         st_out = self.rnn_layer.forward(out, st)
         
         out = f.relu(self.conv3.forward(st_out))
