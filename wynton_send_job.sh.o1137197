@@ -1,3 +1,0 @@
-import: unable to open X server `' @ error/import.c/ImportImageCommand/369.
-/var/spool/sge/wynton/qb3-idgpu6/job_scripts/1137197: line 8: syntax error near unexpected token `os.getcwd'
-/var/spool/sge/wynton/qb3-idgpu6/job_scripts/1137197: line 8: `print(os.getcwd())'
