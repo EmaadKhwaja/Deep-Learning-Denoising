@@ -93,7 +93,9 @@ def interpolate_mask(tensor, mask, mask_inv):
     kernel = kernel[np.newaxis, np.newaxis, :, :]
     kernel = torch.Tensor(kernel).to(device)
     kernel = kernel / kernel.sum()
-    
-    filtered_tensor = torch.nn.functional.conv2d(tensor, kernel,stride=1, padding=1, groups=2)
+    dummy= torch.zeros(kernel.shape)
+    kernel=torch.cat([kernel, dummy],dim=0)
+        
+    filtered_tensor = torch.nn.functional.conv2d(tensor, kernel,stride=1,groups=2,padding=1)
 
     return filtered_tensor * mask + tensor * mask_inv
