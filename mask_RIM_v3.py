@@ -37,6 +37,9 @@ class Masker():
             net_input = masked
 
         return net_input, mask
+    
+ 
+
 
     def __len__(self):
         return self.n_masks
@@ -71,8 +74,7 @@ class Masker():
                 acc_tensor = acc_tensor + (net_output * mask).cpu()
 
             return acc_tensor
-
-
+  
 def pixel_grid_mask(shape, patch_size, phase_x, phase_y):
     A = torch.zeros(shape[-2:])
     for i in range(shape[-2]):
@@ -92,6 +94,6 @@ def interpolate_mask(tensor, mask, mask_inv):
     kernel = torch.Tensor(kernel).to(device)
     kernel = kernel / kernel.sum()
     
-    filtered_tensor = torch.nn.functional.conv2d(tensor, kernel,stride=1, padding=1)
+    filtered_tensor = torch.nn.functional.conv2d(tensor, kernel,stride=1, padding=1, groups=2)
 
     return filtered_tensor * mask + tensor * mask_inv

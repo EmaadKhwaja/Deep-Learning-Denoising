@@ -29,16 +29,16 @@ class RIM(nn.Module):
 
         self.bounded = bounded
 
-    def forward(self, xt, st1, st2, i):
+    def forward(self, xt, st1, st2, i, j):
         
-        if i==0:
+        if i==0 and j==0:
             st1=torch.zeros(xt.size())
         
         out = f.relu(self.conv1.forward(xt))
         st_out1 = self.rnn_layer1.forward(out, st1)
         out = f.relu(self.conv2.forward(st_out1))
         
-        if i==0:
+        if i==0 and j==0:
             st2=torch.zeros(out.size())
             
         st_out2 = self.rnn_layer2.forward(out, st2)
