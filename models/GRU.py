@@ -21,9 +21,9 @@ class GRU(nn.Module):
     def forward(self, xt, st):
         stacked_inputs = torch.cat([xt, st], dim=1)
 
-        update = f.sigmoid(self.update_gate(stacked_inputs))
-        reset = f.sigmoid(self.reset_gate(stacked_inputs))
-        out_inputs = f.tanh(self.out_gate(torch.cat([xt, st * reset], dim=1)))
+        update = torch.sigmoid(self.update_gate(stacked_inputs))
+        reset = torch.sigmoid(self.reset_gate(stacked_inputs))
+        out_inputs = torch.tanh(self.out_gate(torch.cat([xt, st * reset], dim=1)))
 
         new_st = st * (1 - update) + out_inputs * update
 
