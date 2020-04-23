@@ -34,8 +34,11 @@ class RIM(nn.Module):
             st1=torch.zeros(xt.size())
         
         out = f.relu(self.conv1.forward(xt))
+        out = nn.BatchNorm2d(out.shape[1])(out)
         st_out1 = self.rnn_layer1.forward(out, st1)
         out = f.relu(self.conv2.forward(st_out1))
+        out = nn.BatchNorm2d(out.shape[1])(out)
+
         
         if j ==0:
             st2=st_out1
@@ -46,6 +49,9 @@ class RIM(nn.Module):
             out = torch.clamp(self.conv3.forward(st_out2), -self.bounded, self.bounded)
         else:
             out = self.conv3.forward(st_out2)
+        
+        out = nn.BatchNorm2d(out.shape[1])(out)
+
 
             return out, st_out1, st_out2
 
